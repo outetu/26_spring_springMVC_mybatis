@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="bce-java-sdk-0.10.21">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/bce-java-sdk-0.10.21.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

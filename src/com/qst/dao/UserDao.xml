@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qst.dao.UserDao">
+	<!-- 查找用户，登录验证用  -->
+	<select id="findUser" resultType="user">
+		SELECT
+		*
+		FROM
+		user
+		WHERE
+		username = #{username}
+		and
+		password = #{password}
+	</select>
+
+	<!-- 注册，添加新用户  -->
+	<select id="addUser" resultType="user">
+		INSERT INTO
+		user(username,password)
+		VALUES
+		(#{username}, #{password})
+	</select>
+
+	<!-- 更新客户详细信息  -->
+	<update id="updatelist">
+		update
+        user_inf
+        set
+		username = #{username},
+        password = #{password},
+        email = #{email},
+        register_time = #{register_time} ,
+        status = #{status}
+		WHERE
+		user_id = #{user_id}
+	</update>
+	<select id="getCountSize" parameterType="java.lang.String" resultType="java.lang.String">
+		select countSize from user where username = #{username}
+	</select>
+	<update id="reSize">
+		update user set countSize = #{formatSize} where username = #{username}
+	</update>
+</mapper>

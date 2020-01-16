@@ -1,0 +1,84 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop" 
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+    http://www.springframework.org/schema/beans/spring-beans-4.3.xsd 
+    http://www.springframework.org/schema/mvc 
+    http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd 
+    http://www.springframework.org/schema/context 
+    http://www.springframework.org/schema/context/spring-context-4.3.xsd 
+    http://www.springframework.org/schema/aop 
+    http://www.springframework.org/schema/aop/spring-aop-4.3.xsd 
+    http://www.springframework.org/schema/tx 
+    http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+    <!-- 配置扫描器 -->
+    <context:component-scan 
+               base-package="com.qst.controller" />
+    <!-- 注解驱动：配置处理器映射器和适配器 -->
+
+    <mvc:annotation-driven />
+    <!--配置静态资源的访问映射，此配置中的文件，将不被前端控制器拦截 -->
+    <!--<mvc:resources location="/js/" mapping="/js/**" />-->
+    <!--<mvc:resources location="/css/" mapping="/css/**" />-->
+    <!--<mvc:resources location="/fonts/" mapping="/fonts/**" />-->
+    <!--<mvc:resources location="/images/" mapping="/images/**" />	-->
+    <!-- 配置视图解释器ViewResolver -->
+    <bean id="jspViewResolver" class=
+    "org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
+    </bean>	
+    
+    <!-- 配置拦截器 -->
+	<!--<mvc:interceptors>-->
+    	<!--<mvc:interceptor>-->
+        	<!--<mvc:mapping path="/**" />-->
+        	<!--<bean class="com.itheima.core.interceptor.LoginInterceptor" />-->
+    	<!--</mvc:interceptor>-->
+	<!--</mvc:interceptors>	-->
+
+    <!-- json转换器 -->
+    <bean
+            class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+                <ref bean="mappingJackson2HttpMessageConverter" />
+            </list>
+        </property>
+    </bean>
+    <bean id="mappingJackson2HttpMessageConverter"
+          class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+        <property name="supportedMediaTypes">
+            <list>
+                <value>text/html;charset=UTF-8</value>
+                <value>text/json;charset=UTF-8</value>
+                <value>application/json;charset=UTF-8</value>
+            </list>
+        </property>
+    </bean>
+    <!-- 注意：CommonsMultipartResolver的id是固定不变的，一定是multipartResolver，不可修改 -->
+    <!--<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize">
+            <value>509715200</value>
+        </property>
+    </bean>
+     <!--   &lt;!&ndash; 如果上传后出现文件名中文乱码可以使用该属性解决 &ndash;&gt;
+        <property name="defaultEncoding" value="utf-8"/>
+        &lt;!&ndash; 单位是字节，不设置默认不限制总的上传文件大小，这里设置总的上传文件大小不超过1M（1*1024*1024） &ndash;&gt;
+        <property name="maxUploadSize" value="1048576"/>
+        &lt;!&ndash; 跟maxUploadSize差不多，不过maxUploadSizePerFile是限制每个上传文件的大小，而maxUploadSize是限制总的上传文件大小 &ndash;&gt;
+        <property name="maxUploadSizePerFile" value="1048576"/>
+    </bean>-->
+
+    <!-- 设置一个简单的异常解析器，当文件上传超过大小限制时跳转 -->
+    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="defaultErrorView" value="error"/>
+    </bean>
+
+</beans>
+
+
